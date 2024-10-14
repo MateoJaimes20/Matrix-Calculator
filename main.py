@@ -1,45 +1,50 @@
 import tkinter as tk
-from tkinter import font
+from tkinter import ttk
 from matriz import Matriz
 from escalar import Escalar
 
-class Aplicacion:
-    def __init__(self, master):
-        self.master = master
-        self.master.title("Calculadora de Multiplicación")
-        self.master.geometry("1920x1080")
+# Configuración de la ventana principal
+root = tk.Tk()  # Inicialización del objeto raíz
+root.title("Calculadora de Multiplicación")
+root.geometry("1000x800")
+root.configure(bg="#cccccc")  # Fondo de la aplicación
 
-        # Definir la fuente Montserrat
-        self.montserrat = font.Font(family="Montserrat", size=10)
+# Crear el estilo de ttk
+style = ttk.Style(root)
+style.theme_use('clam')
+style.configure("TButton", background="#39a0fc", foreground="white", font=("Helvetica", 10, "bold"))
+style.map("TButton", background=[('active', '#206098')])
 
-        # Frame superior para opciones
-        self.frame_opciones = tk.Frame(self.master)
-        self.frame_opciones.pack(pady=10)
+# Funciones para mostrar las opciones de matriz o escalar
+def mostrar_matriz():
+    escalar_app.frame.pack_forget()  # Ocultar interfaz de escalar
+    matriz_app.frame.pack(fill=tk.BOTH, expand=True)  # Mostrar interfaz de matriz
 
-        self.btn_matriz = tk.Button(self.frame_opciones, text="Multiplicación de Matrices", command=self.mostrar_matriz, font=self.montserrat)
-        self.btn_matriz.pack(side=tk.LEFT, padx=5)
+def mostrar_escalar():
+    matriz_app.frame.pack_forget()  # Ocultar interfaz de matriz
+    escalar_app.frame.pack(fill=tk.BOTH, expand=True)  # Mostrar interfaz de escalar
 
-        self.btn_escalar = tk.Button(self.frame_opciones, text="Multiplicación por Escalar", command=self.mostrar_escalar, font=self.montserrat)
-        self.btn_escalar.pack(side=tk.LEFT, padx=5)
+# Frame superior para opciones
+frame_opciones = tk.Frame(root)
+frame_opciones.pack(pady=10)
 
-        # Frame donde se mostrará la interfaz de matriz o escalar
-        self.frame_contenido = tk.Frame(self.master)
-        self.frame_contenido.pack(pady=10)
+# Botones de opciones
+btn_matriz = ttk.Button(frame_opciones, text="Multiplicación de Matrices", command=mostrar_matriz)
+btn_matriz.pack(side=tk.LEFT, padx=5)
 
-        self.matriz_app = Matriz(self.frame_contenido)
-        self.escalar_app = Escalar(self.frame_contenido)
+btn_escalar = ttk.Button(frame_opciones, text="Multiplicación por Escalar", command=mostrar_escalar)
+btn_escalar.pack(side=tk.LEFT, padx=5)
 
-        self.mostrar_matriz()  # Mostrar la opción de matriz al inicio
+# Frame donde se mostrará la interfaz de matriz o escalar
+frame_contenido = tk.Frame(root)
+frame_contenido.pack(pady=10)
 
-    def mostrar_matriz(self):
-        self.escalar_app.frame.pack_forget()  # Ocultar escalar
-        self.matriz_app.frame.pack(fill=tk.BOTH, expand=True)  # Mostrar matriz
+# Instanciar las clases Matriz y Escalar
+matriz_app = Matriz(frame_contenido)
+escalar_app = Escalar(frame_contenido)
 
-    def mostrar_escalar(self):
-        self.matriz_app.frame.pack_forget()  # Ocultar matriz
-        self.escalar_app.frame.pack(fill=tk.BOTH, expand=True)  # Mostrar escalar
+# Mostrar la opción de matriz al inicio
+mostrar_matriz()
 
-if __name__ == "__main__":
-    root = tk.Tk()
-    app = Aplicacion(root)
-    root.mainloop()
+# Iniciar el bucle principal de la interfaz
+root.mainloop()
