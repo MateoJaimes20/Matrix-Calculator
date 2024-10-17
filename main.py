@@ -9,7 +9,7 @@ ctk.set_default_color_theme("blue")  # Tema azul por defecto
 
 root = ctk.CTk()  # Inicialización del objeto raíz
 root.title("Calculadora de Multiplicación")
-root.geometry("1920x1080")
+root.geometry("1080x720")
 
 # Funciones para mostrar las opciones de matriz o escalar
 def mostrar_matriz():

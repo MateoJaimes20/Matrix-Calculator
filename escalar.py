@@ -94,33 +94,34 @@ class Escalar:
             widget.destroy()
 
         resultado_frame = ctk.CTkFrame(self.resultados_frame)
-        resultado_frame.pack(pady=5)
+        resultado_frame.grid(row=0, column=0, columnspan=4, pady=5)
 
-        ctk.CTkLabel(resultado_frame, text="Resultado de la multiplicación por escalar").grid(row=0, column=0, columnspan=len(resultado[0]), pady=5)
+        # Centrar el título
+        ctk.CTkLabel(resultado_frame, text="Resultado de la multiplicación por escalar").grid(row=0, column=0, columnspan=len(resultado[0]), pady=5, sticky="nsew")
 
         for i in range(len(resultado)):
             for j in range(len(resultado[0])):
                 resultado_frame_cell = ctk.CTkFrame(resultado_frame, border_width=1)
-                resultado_frame_cell.grid(row=i + 1, column=j, padx=5, pady=5)
+                resultado_frame_cell.grid(row=i + 1, column=j, padx=5, pady=5, sticky="nsew")
 
                 resultado_label = ctk.CTkLabel(resultado_frame_cell, text=f"{round(resultado[i][j], 4)}", width=50)
                 resultado_label.pack(fill=tk.BOTH, expand=True)
 
-        # Botones para operaciones adicionales
+        # Botones para operaciones adicionales en una fila
         self.boton_determinante = ctk.CTkButton(self.resultados_frame, text="Determinante", command=lambda: self.calcular_determinante(resultado))
-        self.boton_determinante.pack(side=tk.LEFT, padx=5)
+        self.boton_determinante.grid(row=1, column=0, padx=5)
 
         self.boton_inversa = ctk.CTkButton(self.resultados_frame, text="Matriz Inversa", command=lambda: self.calcular_inversa(resultado))
-        self.boton_inversa.pack(side=tk.LEFT, padx=5)
+        self.boton_inversa.grid(row=1, column=1, padx=5)
 
         self.boton_transpuesta = ctk.CTkButton(self.resultados_frame, text="Matriz Transpuesta", command=lambda: self.calcular_transpuesta(resultado))
-        self.boton_transpuesta.pack(side=tk.LEFT, padx=5)
+        self.boton_transpuesta.grid(row=1, column=2, padx=5)
 
         self.boton_rango = ctk.CTkButton(self.resultados_frame, text="Rango", command=lambda: self.calcular_rango(resultado))
-        self.boton_rango.pack(side=tk.LEFT, padx=5)
+        self.boton_rango.grid(row=1, column=3, padx=5)
 
-        self.boton_borrar = ctk.CTkButton(self.resultados_frame, text="Borrar Resultados", command=self.borrar_resultados)
-        self.boton_borrar.pack(side=tk.LEFT, padx=5)
+        self.boton_borrar = ctk.CTkButton(self.resultados_frame, text="Limpiar Entradas", command=self.limpiar_entradas)
+        self.boton_borrar.grid(row=2, columnspan=4, pady=10)
 
     def calcular_determinante(self, resultado):
         if len(resultado) != len(resultado[0]):
@@ -142,7 +143,7 @@ class Escalar:
             messagebox.showerror("Error", "La matriz no tiene inversa.")
 
     def calcular_transpuesta(self, resultado):
-        ranspuesta = np.round(np.transpose(resultado), 4)
+        transpuesta = np.round(np.transpose(resultado), 4)
         self.mostrar_resultado_opciones("Matriz Transpuesta:", transpuesta)
 
     def calcular_rango(self, resultado):
@@ -154,7 +155,7 @@ class Escalar:
             widget.destroy()
 
         resultado_op_frame = ctk.CTkFrame(self.resultados_frame)
-        resultado_op_frame.pack(pady=5)
+        resultado_op_frame.grid(row=3, columnspan=4, pady=5)
 
         self.resultados_adicionales.append(resultado_op_frame)
 
@@ -174,7 +175,20 @@ class Escalar:
         for widget in self.resultados_frame.winfo_children():
             widget.destroy()
 
+    def limpiar_entradas(self):
+        # Limpiar las entradas de tamaño de las matrices
+        self.filas_A_entry.delete(0, tk.END)
+        self.cols_A_entry.delete(0, tk.END)
+        self.escalar_entry.delete(0,tk.END)
+        
+        # Limpiar las entradas de las matrices generadas
+        for widget in self.frame_matrices.winfo_children():
+            widget.destroy()
+
+        # Limpiar resultados anteriores
+        self.borrar_resultados()
+
 if __name__ == "__main__":
     root = tk.Tk()
-    app = Matriz(root)
+    app = Escalar(root)
     root.mainloop()
