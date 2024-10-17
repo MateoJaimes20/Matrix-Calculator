@@ -1,7 +1,6 @@
 import tkinter as tk
-from tkinter import ttk
+import customtkinter as ctk
 from tkinter import messagebox
-from tkinter import font
 import numpy as np
 
 def multiplicar_matrices(A, B):
@@ -36,51 +35,49 @@ def obtener_matriz(entries, rows, cols):
 
 class Matriz:
     def __init__(self, master):
-        self.frame = tk.Frame(master, bg="#cccccc")
+        self.frame = ctk.CTkFrame(master)
         self.crear_widgets()
-        self.resultados_frame = tk.Frame(self.frame, bg="#cccccc")  # Frame para resultados
+        self.resultados_frame = ctk.CTkFrame(self.frame)  # Frame para resultados
         self.resultados_frame.grid(row=7, columnspan=4, pady=5)  # Posicionar el frame de resultados
         self.resultados_adicionales = []  # Almacenará las etiquetas de resultados adicionales
 
     def crear_widgets(self):
-        self.montserrat = font.Font(family="Montserrat", size=10)
-
         # Entradas para el tamaño de las matrices en una sola línea
-        self.tamano_A_label = ttk.Label(self.frame, text="Tamaño de la matriz A (Filas x Columnas):", font=self.montserrat, background="#cccccc")
+        self.tamano_A_label = ctk.CTkLabel(self.frame, text="Tamaño de la matriz A (Filas x Columnas):")
         self.tamano_A_label.grid(row=0, column=0, padx=5, pady=5)
 
-        self.filas_A_entry = ttk.Entry(self.frame, width=5, font=self.montserrat)
+        self.filas_A_entry = ctk.CTkEntry(self.frame, width=50)
         self.filas_A_entry.grid(row=0, column=1, padx=(0, 2), pady=5)
 
-        self.x_label = ttk.Label(self.frame, text="x", font=self.montserrat, background="#cccccc")
+        self.x_label = ctk.CTkLabel(self.frame, text="x")
         self.x_label.grid(row=0, column=2, padx=2, pady=5)
 
-        self.cols_A_entry = ttk.Entry(self.frame, width=5, font=self.montserrat)
+        self.cols_A_entry = ctk.CTkEntry(self.frame, width=50)
         self.cols_A_entry.grid(row=0, column=3, padx=(2, 0), pady=5)
 
         # Entradas para el tamaño de la matriz B
-        self.tamano_B_label = ttk.Label(self.frame, text="Tamaño de la matriz B (Filas x Columnas):", font=self.montserrat, background="#cccccc")
+        self.tamano_B_label = ctk.CTkLabel(self.frame, text="Tamaño de la matriz B (Filas x Columnas):")
         self.tamano_B_label.grid(row=1, column=0, padx=5, pady=5)
 
-        self.filas_B_entry = ttk.Entry(self.frame, width=5, font=self.montserrat)
+        self.filas_B_entry = ctk.CTkEntry(self.frame, width=50)
         self.filas_B_entry.grid(row=1, column=1, padx=(0, 2), pady=5)
 
-        self.x_label_B = ttk.Label(self.frame, text="x", font=self.montserrat, background="#cccccc")
+        self.x_label_B = ctk.CTkLabel(self.frame, text="x")
         self.x_label_B.grid(row=1, column=2, padx=2, pady=5)
 
-        self.cols_B_entry = ttk.Entry(self.frame, width=5, font=self.montserrat)
+        self.cols_B_entry = ctk.CTkEntry(self.frame, width=50)
         self.cols_B_entry.grid(row=1, column=3, padx=(2, 0), pady=5)
 
         # Botón para generar las entradas
-        self.boton_generar = ttk.Button(self.frame, text="Generar Entradas", command=self.generar_entradas)
+        self.boton_generar = ctk.CTkButton(self.frame, text="Generar Entradas", command=self.generar_entradas)
         self.boton_generar.grid(row=2, columnspan=4, pady=10)
 
         # Frame para las matrices de entrada
-        self.frame_matrices = tk.Frame(self.frame, bg="#cccccc")
+        self.frame_matrices = ctk.CTkFrame(self.frame)
         self.frame_matrices.grid(row=3, columnspan=4, pady=5)
 
         # Botón para calcular
-        self.boton_calcular = ttk.Button(self.frame, text="Calcular", command=self.calcular)
+        self.boton_calcular = ctk.CTkButton(self.frame, text="Calcular", command=self.calcular)
         self.boton_calcular.grid(row=4, columnspan=4, pady=10)
 
         self.frame.pack(fill=tk.BOTH, expand=True)
@@ -102,20 +99,20 @@ class Matriz:
             widget.destroy()
 
         global A_entries, B_entries
-        A_entries = [[ttk.Entry(self.frame_matrices, width=5, font=self.montserrat) for _ in range(cols_A)] for _ in range(filas_A)]
-        B_entries = [[ttk.Entry(self.frame_matrices, width=5, font=self.montserrat) for _ in range(cols_B)] for _ in range(filas_B)]
+        A_entries = [[ctk.CTkEntry(self.frame_matrices, width=50) for _ in range(cols_A)] for _ in range(filas_A)]
+        B_entries = [[ctk.CTkEntry(self.frame_matrices, width=50) for _ in range(cols_B)] for _ in range(filas_B)]
 
         # Etiqueta para la matriz A
-        ttk.Label(self.frame_matrices, text="Matriz A", font=self.montserrat, background="#cccccc").grid(row=0, column=0, columnspan=cols_A, pady=5)
+        ctk.CTkLabel(self.frame_matrices, text="Matriz A").grid(row=0, column=0, columnspan=cols_A, pady=5)
         for i in range(filas_A):
             for j in range(cols_A):
                 A_entries[i][j].grid(row=i + 1, column=j, padx=5, pady=5)
 
         # Separador (centrado)
-        ttk.Label(self.frame_matrices, text="x", font=self.montserrat, background="#cccccc").grid(row=0, column=cols_A, padx=5, pady=5)
+        ctk.CTkLabel(self.frame_matrices, text="x").grid(row=0, column=cols_A, padx=5, pady=5)
 
         # Etiqueta para la matriz B
-        ttk.Label(self.frame_matrices, text="Matriz B", font=self.montserrat, background="#cccccc").grid(row=0, column=cols_A + 1, columnspan=cols_B, pady=5)
+        ctk.CTkLabel(self.frame_matrices, text="Matriz B").grid(row=0, column=cols_A + 1, columnspan=cols_B, pady=5)
         for i in range(filas_B):
             for j in range(cols_B):
                 B_entries[i][j].grid(row=i + 1, column=cols_A + 1 + j, padx=5, pady=5)
@@ -140,38 +137,36 @@ class Matriz:
         for widget in self.resultados_frame.winfo_children():
             widget.destroy()
 
-        resultado_frame = tk.Frame(self.resultados_frame, bg="#cccccc")
+        resultado_frame = ctk.CTkFrame(self.resultados_frame)
         resultado_frame.pack(pady=5)
 
-        ttk.Label(resultado_frame, text="Resultado de la multiplicación", font=self.montserrat, background="#cccccc").grid(row=0, column=0, columnspan=len(resultado[0]), pady=5)
+        ctk.CTkLabel(resultado_frame, text="Resultado de la multiplicación").grid(row=0, column=0, columnspan=len(resultado[0]), pady=5)
 
         # Crear tabla para mostrar los resultados
         for i in range(len(resultado)):
             for j in range(len(resultado[0])):
-                resultado_frame_cell = tk.Frame(resultado_frame, bg="#848a90", bd=1)  # Cambia "#39a0fc" por el color de borde deseado
+                resultado_frame_cell = ctk.CTkFrame(resultado_frame, border_width=1)
                 resultado_frame_cell.grid(row=i + 1, column=j, padx=5, pady=5)
 
-                resultado_label = ttk.Label(resultado_frame_cell, 
-                                             text=f"{resultado[i][j]}", 
-                                             font=self.montserrat, 
-                                             background="#ffffff",  # Cambiar el color de fondo aquí
-                                             width=5)
+                resultado_label = ctk.CTkLabel(resultado_frame_cell, 
+                                text=f"{round(resultado[i][j], 4)}", 
+                                width=50)
                 resultado_label.pack(fill=tk.BOTH, expand=True)
 
         # Botones para operaciones adicionales
-        self.boton_determinante = ttk.Button(self.resultados_frame, text="Determinante", command=lambda: self.calcular_determinante(resultado))
+        self.boton_determinante = ctk.CTkButton(self.resultados_frame, text="Determinante", command=lambda: self.calcular_determinante(resultado))
         self.boton_determinante.pack(side=tk.LEFT, padx=5)
 
-        self.boton_inversa = ttk.Button(self.resultados_frame, text="Matriz Inversa", command=lambda: self.calcular_inversa(resultado))
+        self.boton_inversa = ctk.CTkButton(self.resultados_frame, text="Matriz Inversa", command=lambda: self.calcular_inversa(resultado))
         self.boton_inversa.pack(side=tk.LEFT, padx=5)
 
-        self.boton_transpuesta = ttk.Button(self.resultados_frame, text="Matriz Transpuesta", command=lambda: self.calcular_transpuesta(resultado))
+        self.boton_transpuesta = ctk.CTkButton(self.resultados_frame, text="Matriz Transpuesta", command=lambda: self.calcular_transpuesta(resultado))
         self.boton_transpuesta.pack(side=tk.LEFT, padx=5)
 
-        self.boton_rango = ttk.Button(self.resultados_frame, text="Rango", command=lambda: self.calcular_rango(resultado))
+        self.boton_rango = ctk.CTkButton(self.resultados_frame, text="Rango", command=lambda: self.calcular_rango(resultado))
         self.boton_rango.pack(side=tk.LEFT, padx=5)
 
-        self.boton_borrar = ttk.Button(self.resultados_frame, text="Borrar Resultados", command=self.borrar_resultados)
+        self.boton_borrar = ctk.CTkButton(self.resultados_frame, text="Borrar Resultados", command=self.borrar_resultados)
         self.boton_borrar.pack(side=tk.LEFT, padx=5)
 
     def calcular_determinante(self, resultado):
@@ -179,7 +174,7 @@ class Matriz:
             messagebox.showerror("Error", "El determinante solo se puede calcular para matrices cuadradas.")
             return
         
-        det = np.linalg.det(resultado)
+        det = round(np.linalg.det(resultado), 4)
         self.mostrar_resultado_opciones("Determinante:", [[det]])
 
     def calcular_inversa(self, resultado):
@@ -188,55 +183,44 @@ class Matriz:
             return
         
         try:
-            inversa = np.linalg.inv(resultado)
-            self.mostrar_resultado_opciones("Inversa:", inversa)
+            inversa = np.round(np.linalg.inv(resultado), 4)
+            self.mostrar_resultado_opciones("Matriz Inversa:", inversa)
         except np.linalg.LinAlgError:
-            messagebox.showerror("Error", "La matriz no es invertible.")
+            messagebox.showerror("Error", "La matriz no tiene inversa.")
 
     def calcular_transpuesta(self, resultado):
-        transpuesta = np.transpose(resultado)
-        self.mostrar_resultado_opciones("Transpuesta:", transpuesta)
+        transpuesta = np.round(np.transpose(resultado), 4)
+        self.mostrar_resultado_opciones("Matriz Transpuesta:", transpuesta)
 
     def calcular_rango(self, resultado):
-        rango = np.linalg.matrix_rank(resultado)
-        self.mostrar_resultado_opciones("Rango:", [[rango]])
+        rango = round(np.linalg.matrix_rank(resultado), 4)
+        self.mostrar_resultado_opciones("Rango de la Matriz:", [[rango]])
 
     def mostrar_resultado_opciones(self, operacion, resultado):
-        # Limpiar resultados anteriores de opciones adicionales
-        for widget in self.resultados_frame.winfo_children():
+        # Limpiar resultados adicionales anteriores
+        for widget in self.resultados_adicionales:
             widget.destroy()
 
-        resultado_frame = tk.Frame(self.resultados_frame, bg="#cccccc")
-        resultado_frame.pack(pady=5)
+        resultado_op_frame = ctk.CTkFrame(self.resultados_frame)
+        resultado_op_frame.pack(pady=5)
 
-        ttk.Label(resultado_frame, text=f"{operacion}", font=self.montserrat, background="#cccccc").grid(row=0, column=0, columnspan=len(resultado[0]), pady=5)
+        self.resultados_adicionales.append(resultado_op_frame)
+
+        ctk.CTkLabel(resultado_op_frame, text=operacion).grid(row=0, column=0, columnspan=len(resultado[0]), pady=5)
 
         for i in range(len(resultado)):
             for j in range(len(resultado[0])):
-                resultado_frame_cell = tk.Frame(resultado_frame, bg="#848a90", bd=1)
-                resultado_frame_cell.grid(row=i + 1, column=j, padx=5, pady=5)
+                resultado_op_cell = ctk.CTkFrame(resultado_op_frame, border_width=1)
+                resultado_op_cell.grid(row=i + 1, column=j, padx=5, pady=5)
 
-                resultado_label = ttk.Label(resultado_frame_cell, 
-                                            text=f"{resultado[i][j]:.2f}", 
-                                            font=self.montserrat, 
-                                            background="#ffffff",  
-                                            width=5)
-                resultado_label.pack(fill=tk.BOTH, expand=True)
-
-            # Botón para volver a la multiplicación
-        boton_volver = ttk.Button(
-            resultado_frame, 
-            text="Volver a Multiplicación", 
-            command=self.calcular
-        )
-        boton_volver.grid(row=len(resultado) + 1, columnspan=len(resultado[0]), pady=10)
+                resultado_op_label = ctk.CTkLabel(resultado_op_cell, 
+                                  text=f"{round(resultado[i][j], 4)}", 
+                                  width=50)
+                resultado_op_label.pack(fill=tk.BOTH, expand=True)
 
     def borrar_resultados(self):
         for widget in self.resultados_frame.winfo_children():
             widget.destroy()
-        self.resultados_adicionales.clear()  # Limpiar la lista de resultados adicionales
-
-
 
 if __name__ == "__main__":
     root = tk.Tk()
